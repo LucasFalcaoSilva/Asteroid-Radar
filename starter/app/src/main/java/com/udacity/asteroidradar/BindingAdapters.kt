@@ -4,9 +4,12 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.net.toUri
 import androidx.databinding.BindingAdapter
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.udacity.asteroidradar.domain.Asteroid
 import com.udacity.asteroidradar.domain.PictureOfDay
+import com.udacity.asteroidradar.flow.main.AsteroidAdapter
 
 @BindingAdapter("loadPictureOfDay")
 fun ImageView.bindPictureOfDay(pictureOfDay: PictureOfDay?) {
@@ -69,4 +72,10 @@ fun TextView.bindTextViewToDisplayVelocity(number: Double) {
         context.getString(R.string.km_s_unit_format),
         number
     )
+}
+
+@BindingAdapter("listData")
+fun RecyclerView.bindRecyclerView(data: List<Asteroid>?) {
+    val adapter = adapter as AsteroidAdapter
+    adapter.submitList(data)
 }

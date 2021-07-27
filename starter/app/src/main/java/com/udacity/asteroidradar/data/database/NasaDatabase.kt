@@ -24,23 +24,40 @@ interface PictureDao {
 
 }
 
-@Database(entities = [PictureOfDayEntity::class], version = 1, exportSchema = false)
-abstract class AsteroidDatabase : RoomDatabase() {
+@Dao
+interface NearEarthObjectDao {
+
+    @Query("SELECT * FROM asteroid_table")
+    fun getNearEarthObjectList(): LiveData<List<AsteroidEntity>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(vararg asteroidEntity: AsteroidEntity)
+
+}
+
+@Database(
+    entities = [PictureOfDayEntity::class, AsteroidEntity::class],
+    version = 1,
+    exportSchema = false
+)
+abstract class NasaDatabase : RoomDatabase() {
 
     abstract val pictureDao: PictureDao
 
+    abstract val nearEarthObjectDao: NearEarthObjectDao
+
     companion object {
         @Volatile
-        private var INSTANCE: AsteroidDatabase? = null
+        private var INSTANCE: NasaDatabase? = null
 
-        fun getInstance(context: Context): AsteroidDatabase {
+        fun getInstance(context: Context): NasaDatabase {
             synchronized(this) {
                 var instance = INSTANCE
                 if (instance == null) {
                     instance = Room.databaseBuilder(
                         context.applicationContext,
-                        AsteroidDatabase::class.java,
-                        "asteroid_database"
+                        NasaDatabase::class.java,
+                        "nasa_database"
                     ).build()
                     INSTANCE = instance
                 }

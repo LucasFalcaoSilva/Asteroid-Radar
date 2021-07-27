@@ -3,7 +3,7 @@ package com.udacity.asteroidradar.flow.main
 import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.udacity.asteroidradar.data.database.AsteroidDatabase
+import com.udacity.asteroidradar.data.database.NasaDatabase
 import com.udacity.asteroidradar.repository.NasaRepository
 
 class MainViewModelFactory(
@@ -14,7 +14,7 @@ class MainViewModelFactory(
         if (modelClass.isAssignableFrom(MainViewModel::class.java)) {
             return MainViewModel(
                 NasaRepository(
-                    AsteroidDatabase.getInstance(context)
+                    NasaDatabase.getInstance(context)
                 )
             ) as T
         }

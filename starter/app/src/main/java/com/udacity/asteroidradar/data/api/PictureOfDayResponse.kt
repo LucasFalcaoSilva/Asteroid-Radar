@@ -14,7 +14,7 @@ data class PictureOfDayResponse(
     var hdurl: String,
     var title: String,
     var date: String,
-    var url: String,
+    var url: String
 ) : Parcelable
 
 fun PictureOfDayResponse.asDatabaseModel() =
