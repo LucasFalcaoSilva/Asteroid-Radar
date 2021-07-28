@@ -22,7 +22,13 @@ class AsteroidAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        AsteroidViewHolder(RecyclerItemAsteroidBinding.inflate(LayoutInflater.from(parent.context)))
+        AsteroidViewHolder(
+            RecyclerItemAsteroidBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
 
     override fun onBindViewHolder(holder: AsteroidViewHolder, position: Int) {
         val marsProperty = getItem(position)

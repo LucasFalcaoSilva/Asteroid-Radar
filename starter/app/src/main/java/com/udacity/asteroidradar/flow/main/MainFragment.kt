@@ -9,8 +9,10 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
+
 
 class MainFragment : Fragment() {
 
@@ -31,10 +33,9 @@ class MainFragment : Fragment() {
         it.lifecycleOwner = this
         it.viewModel = mainViewModel
 
-        it.asteroidRecycler.adapter = AsteroidAdapter(OnClickListener {
-            mainViewModel.displayAsteroidDetails(it)
+        it.asteroidRecycler.adapter = AsteroidAdapter(OnClickListener { asteroid ->
+            mainViewModel.displayAsteroidDetails(asteroid)
         })
-        
         mainViewModel.navigateToSelectedProperty.observe(viewLifecycleOwner, { asteroid ->
             if (null != asteroid) {
                 this.findNavController().navigate(MainFragmentDirections.actionShowDetail(asteroid))

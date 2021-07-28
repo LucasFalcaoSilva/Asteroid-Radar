@@ -12,8 +12,8 @@ class MainViewModel(
     private val nasaRepository: NasaRepository
 ) : ViewModel() {
 
-    private val _navigateToSelectedProperty = MutableLiveData<Asteroid>()
-    val navigateToSelectedProperty: LiveData<Asteroid>
+    private val _navigateToSelectedProperty = MutableLiveData<Asteroid?>()
+    val navigateToSelectedProperty: LiveData<Asteroid?>
         get() = _navigateToSelectedProperty
 
     val pictureOfDay = nasaRepository.pictureOfDay
