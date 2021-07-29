@@ -27,7 +27,9 @@ class MainViewModel(
             nasaRepository.apply {
                 onQueryAsteroidChanged(AsteroidFilter.SHOW_SAVED)
                 refreshPictureOfDay()
-                refreshNearEarthObject()
+                if (hasNearEarthObject()) {
+                    searchSevenDaysNearEarthObject()
+                }
             }
         }
     }

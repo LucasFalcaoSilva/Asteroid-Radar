@@ -66,27 +66,55 @@ class NasaRepository(
         }
     }
 
-    suspend fun refreshNearEarthObject() {
+    suspend fun hasNearEarthObject() =
         withContext(Dispatchers.IO) {
-            try {
-                NasaApi.nasaService.getNearEarthObject(
-                    Calendar.getInstance().currentFormatDate(),
-                    Calendar.getInstance().addSevenDays().currentFormatDate(),
-                    BuildConfig.NASA_KEY
-                ).apply {
-                    if (isSuccessful) {
-                        body()?.let { response ->
-                            nasaDatabase.nearEarthObjectDao.insertAll(
-                                *parseAsteroidsJsonResult(JSONObject(response)).map {
-                                    it.asDatabaseModel()
-                                }.toTypedArray()
-                            )
-                        }
+            nasaDatabase.nearEarthObjectDao.getNearEarthObjectSavedList().isEmpty()
+        }
+
+    suspend fun searchSevenDaysNearEarthObject() {
+        withContext(Dispatchers.IO) {
+            searchNearEarthObject(
+                Calendar.getInstance().currentFormatDate(),
+                Calendar.getInstance().addSevenDays().currentFormatDate()
+            )
+        }
+    }
+
+    suspend fun searchCurrentDayNearEarthObject() {
+        withContext(Dispatchers.IO) {
+            val currentDate = Calendar.getInstance().currentFormatDate()
+            searchNearEarthObject(
+                currentDate,
+                currentDate
+            )
+        }
+    }
+
+    suspend fun searchNearEarthObject(startDate: String, endDate: String) {
+        try {
+            NasaApi.nasaService.getNearEarthObject(
+                startDate,
+                endDate,
+                BuildConfig.NASA_KEY
+            ).apply {
+                if (isSuccessful) {
+                    body()?.let { response ->
+                        nasaDatabase.nearEarthObjectDao.insertAll(
+                            *parseAsteroidsJsonResult(JSONObject(response)).map {
+                                it.asDatabaseModel()
+                            }.toTypedArray()
+                        )
                     }
                 }
-            } catch (e: Exception) {
-                Log.e("refreshPictureOfDay", "Erro ao tentar obter getNearEarthObject", e)
             }
+        } catch (e: Exception) {
+            Log.e("refreshPictureOfDay", "Erro ao tentar obter getNearEarthObject", e)
+        }
+    }
+
+    suspend fun deleteOldNearEarthObject() {
+        withContext(Dispatchers.IO) {
+            nasaDatabase.nearEarthObjectDao.deleteOldNearEarthObject()
         }
     }
 }

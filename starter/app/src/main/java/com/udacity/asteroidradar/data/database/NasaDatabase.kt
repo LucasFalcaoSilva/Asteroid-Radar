@@ -27,6 +27,9 @@ interface PictureDao {
 @Dao
 interface NearEarthObjectDao {
 
+    @Query("DELETE FROM asteroid_table where closeApproachDate < date('now')")
+    fun deleteOldNearEarthObject()
+
     @Query("SELECT * FROM asteroid_table")
     fun getNearEarthObjectSavedList(): List<AsteroidEntity>
 

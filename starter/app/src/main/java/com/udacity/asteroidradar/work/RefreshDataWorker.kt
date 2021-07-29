@@ -18,6 +18,8 @@ class RefreshDataWorker(appContext: Context, params: WorkerParameters) :
         val repository = NasaRepository(NasaDatabase.getInstance(applicationContext))
         return try {
             repository.refreshPictureOfDay()
+            repository.searchCurrentDayNearEarthObject()
+            repository.deleteOldNearEarthObject()
             Result.success()
         } catch (e: HttpException) {
             Result.retry()

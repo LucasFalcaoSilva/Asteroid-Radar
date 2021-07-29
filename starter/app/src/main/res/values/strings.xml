@@ -22,4 +22,5 @@
     <string name="help_button">Help Button</string>
     <string name="asteroid_image">Asteroid Image</string>
     <string name="dangerous_image">dangerous image</string>
+    <string name="picture_of_the_day">picture of the day</string>
 </resources>
