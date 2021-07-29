@@ -28,7 +28,13 @@ interface PictureDao {
 interface NearEarthObjectDao {
 
     @Query("SELECT * FROM asteroid_table")
-    fun getNearEarthObjectList(): LiveData<List<AsteroidEntity>>
+    fun getNearEarthObjectSavedList(): List<AsteroidEntity>
+
+    @Query("SELECT * FROM asteroid_table where closeApproachDate = date('now') ")
+    fun getNearEarthObjectTodayList(): List<AsteroidEntity>
+
+    @Query("SELECT * FROM asteroid_table where closeApproachDate BETWEEN date('now') and date('now','7 day') ")
+    fun getNearEarthObjectWeekList(): List<AsteroidEntity>
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(vararg asteroidEntity: AsteroidEntity)

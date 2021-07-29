@@ -2,6 +2,7 @@ package com.udacity.asteroidradar.repository
 
 import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Transformations
 import com.udacity.asteroidradar.BuildConfig
 import com.udacity.asteroidradar.data.api.NasaApi
@@ -28,15 +29,24 @@ class NasaRepository(
         ) {
             it?.asDomainModel()
         }
+    private val _asteroidList = MutableLiveData<List<Asteroid>>()
+    val asteroidList: LiveData<List<Asteroid>>
+        get() = _asteroidList
 
-    val asteroidList: LiveData<List<Asteroid>> =
-        Transformations.map(
-            nasaDatabase.nearEarthObjectDao.getNearEarthObjectList()
-        ) { list ->
-            list.map {
-                it.asDomainModel()
+    suspend fun onQueryAsteroidChanged(asteroidFilter: AsteroidFilter) {
+        _asteroidList.value = withContext(Dispatchers.IO) {
+            when (asteroidFilter) {
+                AsteroidFilter.SHOW_WEEK ->
+                    nasaDatabase.nearEarthObjectDao.getNearEarthObjectWeekList()
+                AsteroidFilter.SHOW_TODAY ->
+                    nasaDatabase.nearEarthObjectDao.getNearEarthObjectTodayList()
+                else ->
+                    nasaDatabase.nearEarthObjectDao.getNearEarthObjectSavedList()
             }
+        }.map {
+            it.asDomainModel()
         }
+    }
 
     suspend fun refreshPictureOfDay() {
         withContext(Dispatchers.IO) {

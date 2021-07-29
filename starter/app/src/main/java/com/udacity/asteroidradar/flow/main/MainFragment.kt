@@ -9,10 +9,9 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
-
+import com.udacity.asteroidradar.repository.AsteroidFilter
 
 class MainFragment : Fragment() {
 
@@ -23,6 +22,17 @@ class MainFragment : Fragment() {
                 requireContext()
             )
         ).get(MainViewModel::class.java)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        mainViewModel.updateAsteroidFilter(
+            when (item.itemId) {
+                R.id.show_week_menu -> AsteroidFilter.SHOW_WEEK
+                R.id.show_today_menu -> AsteroidFilter.SHOW_TODAY
+                else -> AsteroidFilter.SHOW_SAVED
+            }
+        )
+        return true
     }
 
     override fun onCreateView(
@@ -52,7 +62,5 @@ class MainFragment : Fragment() {
         inflater.inflate(R.menu.main_overflow_menu, menu)
         super.onCreateOptionsMenu(menu, inflater)
     }
-
-    override fun onOptionsItemSelected(item: MenuItem) = true
 
 }

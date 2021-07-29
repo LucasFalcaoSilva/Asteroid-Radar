@@ -5,7 +5,6 @@ data class PictureOfDay(
     val mediaType: String,
     val title: String,
     val explanation: String,
-    val copyright: String,
     val date: String,
 )
 

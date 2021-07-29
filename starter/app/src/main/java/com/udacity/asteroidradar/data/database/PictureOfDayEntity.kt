@@ -10,7 +10,6 @@ data class PictureOfDayEntity constructor(
     val date: String,
     val url: String,
     val title: String,
-    val copyright: String,
     val mediaType: String,
     val explanation: String,
 )
@@ -20,6 +19,5 @@ fun PictureOfDayEntity.asDomainModel() = PictureOfDay(
     date = this.date,
     title = this.title,
     mediaType = this.mediaType,
-    copyright = this.copyright,
     explanation = this.explanation,
 )

@@ -10,7 +10,6 @@ data class PictureOfDayResponse(
     @Json(name = "service_version") var serviceVersion: String,
     @Json(name = "media_type") var mediaType: String,
     var explanation: String,
-    var copyright: String,
     var hdurl: String,
     var title: String,
     var date: String,
@@ -23,7 +22,6 @@ fun PictureOfDayResponse.asDatabaseModel() =
         date = this.date,
         title = this.title,
         mediaType = this.mediaType,
-        copyright = this.copyright,
         explanation = this.explanation
     )
 
